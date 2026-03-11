@@ -1,0 +1,234 @@
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="center">
+
+<div class="card login-card">
+
+<h2>Student Login</h2>
+
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
+
+<button class="primary" onclick="login()">Login</button>
+
+</div>
+
+<script src="js/config.js"></script>
+
+<script>
+
+async function login(){
+
+const res = await fetch(BASE_URL+"/login/login",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+username:username.value,
+password:password.value
+})
+})
+
+const data = await res.json()
+
+if(!data.token){
+alert(data.message)
+return
+}
+
+localStorage.setItem("token",data.token)
+
+window.location.href="exams.html"
+
+}
+
+</script>
+
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | CET Stratos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-gradient: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* The Login Card */
+        .login-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        h2 {
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        /* Small subtitle effect */
+        .login-card::before {
+            content: "CET STRATOS";
+            display: block;
+            color: var(--primary-color);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Form Inputs */
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 10px 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box; /* Crucial for padding */
+            transition: all 0.2s ease;
+            outline: none;
+            background-color: #f8fafc;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Primary Button */
+        button.primary {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.1s active;
+        }
+
+        button.primary:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        button.primary:active {
+            transform: scale(0.98);
+        }
+
+        /* Subtle Fade-in Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 480px) {
+            .login-card {
+                margin: 20px;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card login-card">
+        <h2>Student Login</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Please enter your credentials to continue</p>
+
+        <input id="username" placeholder="Username" autocomplete="username">
+        <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+
+        <button class="primary" onclick="login()">Login</button>
+    </div>
+
+    <script src="js/config.js"></script>
+
+    <script>
+        async function login() {
+            // Added simple loading state to button
+            const btn = document.querySelector('.primary');
+            const originalText = btn.innerText;
+            btn.innerText = "Authenticating...";
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(BASE_URL + "/login/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username: username.value,
+                        password: password.value
+                    })
+                });
+
+                const data = await res.json();
+
+                if (!data.token) {
+                    alert(data.message || "Invalid credentials");
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                    return;
+                }
+
+                localStorage.setItem("token", data.token);
+                window.location.href = "exams.html";
+
+            } catch (err) {
+                alert("Server error. Please try again later.");
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // Allow "Enter" key to submit
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') login();
+        });
+    </script>
+
+</body>
+</html>

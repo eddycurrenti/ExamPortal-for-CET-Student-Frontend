@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Student Exam</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="exam-page">
+
+    <!-- HEADER -->
+
+    <div class="topbar">
+        <div class="logo">
+            <b>CET Stratos</b>
+        </div>
+        <div class="candidate-info">
+            Candidate: Student<br>
+            Remaining Time: <span id="timer">--:--</span>
+        </div>
+
+    </div>
+
+
+    <!-- SUBJECT TABS -->
+
+    <div class="subject-tabs">
+
+        <button onclick="filterSubject('Physics')">Physics</button>
+        <button onclick="filterSubject('Physical Chemistry')">Chemistry</button>
+        <button onclick="filterSubject('Mathematics')">Mathematics</button>
+
+    </div>
+
+
+
+    <div class="exam-container">
+
+        <!-- QUESTION PANEL -->
+
+        <div class="question-panel">
+
+            <h3 id="questionNumber"></h3>
+
+            <p id="questionText"></p>
+
+            <div id="options"></div>
+
+
+            <div class="question-actions">
+
+                <button onclick="prevQuestion()">Previous (no save)</button>
+
+                
+
+                <button onclick="markReview()">Mark for Review</button>
+
+                <button onclick="clearAnswer()">Clear</button>
+
+            </div>
+
+
+            <div class="question-actions">
+                <button onclick="saveAndNext()">Save & Next</button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PALETTE -->
+
+        <div class="palette">
+
+            <h3>Question Palette</h3>
+
+            <div id="palette"></div>
+
+            <button class="submit" onclick="submitExam()">
+                Submit
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/exam.js"></script>
+
+</body>
+
+</html>
