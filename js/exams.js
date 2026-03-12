@@ -1,81 +1,3 @@
-// const token = localStorage.getItem("token")
-
-// if(!token){
-// window.location.href="login.html"
-// }
-
-// async function loadExams(){
-
-// const res = await fetch(
-// BASE_URL+"/MyStudent/getExam",
-// {
-// headers:authHeader()
-// }
-// )
-
-// const data = await res.json()
-
-// const list = document.getElementById("examList")
-
-// list.innerHTML=""
-
-// if(data.message){
-// list.innerHTML=data.message
-// return
-// }
-
-// data.forEach(e=>{
-
-// list.innerHTML+=`
-
-// <div class="card exam">
-
-// <div>
-
-// <h3>${e.title}</h3>
-
-// <p>Duration: ${e.duration} minutes</p>
-
-// </div>
-
-// <button class="primary"
-// onclick="startExam('${e._id}')">
-
-// Start Exam
-
-// </button>
-
-// </div>
-
-// `
-
-// })
-
-// }
-
-// async function startExam(examId){
-
-// const res = await fetch(
-// BASE_URL+"/MyStudent/startTheExam",
-// {
-// method:"POST",
-// headers:{
-// "Content-Type":"application/json",
-// ...authHeader()
-// },
-// body:JSON.stringify({examId})
-// })
-
-// const data = await res.json()
-
-// alert(data.message)
-
-// window.location.href="exam.html?examId="+examId
-
-// }
-
-// loadExams()
-
 const token = localStorage.getItem("token")
 
 if(!token){
@@ -102,6 +24,29 @@ return
 
 data.forEach(exam=>{
 
+let actionButton = ""
+
+if(exam.status === "Completed"){
+
+actionButton = `
+<button class="start-btn"
+onclick="viewResult('${exam._id}')">
+View Result
+</button>
+`
+
+}
+else{
+
+actionButton = `
+<button class="start-btn"
+onclick="startExam('${exam._id}')">
+Start Exam
+</button>
+`
+
+}
+
 list.innerHTML += `
 
 <div class="exam-card">
@@ -118,10 +63,7 @@ Duration: ${exam.duration} minutes
 
 <div class="exam-card-right">
 
-<button class="start-btn"
-onclick="startExam('${exam._id}')">
-Start Exam
-</button>
+${actionButton}
 
 </div>
 
@@ -156,6 +98,10 @@ return
 
 window.location.href = "exam.html?examId=" + examId
 
+}
+
+function viewResult(examId){
+window.location.href = "result.html?examId=" + examId
 }
 
 loadExams()
